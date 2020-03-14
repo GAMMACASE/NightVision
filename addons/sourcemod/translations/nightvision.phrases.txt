@@ -1,0 +1,56 @@
+"Phrases"
+{
+	"nightvision_enabled"
+	{
+		"en"	"[NightVision] Night vision was enabled. (Take a look at !nightvisionsettings (or !nvs in short) to configure it)"
+	}
+	
+	"nightvision_disabled"
+	{
+		"en"	"[NightVision] Night vision was disabled."
+	}
+	
+	"nightvision_spam_attempt"
+	{
+		"en"	"[NightVision] Please wait before using same command again."
+	}
+	
+	"nvs_menu_title"
+	{
+		"en"	"NightVision Settings:"
+	}
+	
+	"nvs_menu_ccselect"
+	{
+		"en"	"Select night vision template"
+	}
+	
+	"nvs_menu_intensity"
+	{
+		"#format" 	"{1:.02f}"
+		"en"	"Current intensity: {1}"
+	}
+	
+	"nvs_menu_intensity_increase"
+	{
+		"#format" 	"{1:.02f}"
+		"en"	"Increase intensity by {1}"
+	}
+	
+	"nvs_menu_intensity_decrease"
+	{
+		"#format" 	"{1:.02f}"
+		"en"	"Decrease intensity by {1}"
+	}
+	
+	"cct_menu_title"
+	{
+		"en"	"NightVision Templates"
+	}
+	
+	"cct_menu_curr_template"
+	{
+		"#format" 	"{1:s}"
+		"en"	"Current template: {1}"
+	}
+}
