@@ -15,6 +15,7 @@ Install plugin like you normally would, don't forget about cfg file (``addons/so
 
 # Usage:
 Use ``sm_nightvision`` (``sm_nv`` for short) to toggle the nightvision.
+
 Use ``sm_nightvisionsettings`` (``sm_nvs`` for short) to open settings menu, where you can configure your night vision (Note: it can be configured in real time, just enable it and then open settings menu).
 
 # Creating custom templates:
