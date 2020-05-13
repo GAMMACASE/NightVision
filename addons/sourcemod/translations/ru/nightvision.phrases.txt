@@ -1,0 +1,56 @@
+"Phrases"
+{
+	"nightvision_enabled"
+	{
+		"ru"	"[NightVision] Ночное видение было включено. (Взгляни на !nightvisionsettings (или короче !nvs) чтобы настроить его)"
+	}
+	
+	"nightvision_disabled"
+	{
+		"ru"	"[NightVision] Ночное видение было отключено."
+	}
+	
+	"nightvision_spam_attempt"
+	{
+		"ru"	"[NightVision] Пожалуйста, подождите, прежде чем использовать ту же команду снова."
+	}
+	
+	"nvs_menu_title"
+	{
+		"ru"	"Настройки NightVision:"
+	}
+	
+	"nvs_menu_ccselect"
+	{
+		"ru"	"Выберите шаблон ночного видения"
+	}
+	
+	"nvs_menu_intensity"
+	{
+		"#format" 	"{1:.02f}"
+		"ru"	"Текущая интенсивность: {1}"
+	}
+	
+	"nvs_menu_intensity_increase"
+	{
+		"#format" 	"{1:.02f}"
+		"ru"	"Увеличить интенсивность на {1}"
+	}
+	
+	"nvs_menu_intensity_decrease"
+	{
+		"#format" 	"{1:.02f}"
+		"ru"	"Уменьшить интенсивность на {1}"
+	}
+	
+	"cct_menu_title"
+	{
+		"ru"	"Шаблоны NightVision"
+	}
+	
+	"cct_menu_curr_template"
+	{
+		"#format" 	"{1:s}"
+		"ru"	"Текущий шаблон: {1}"
+	}
+}
