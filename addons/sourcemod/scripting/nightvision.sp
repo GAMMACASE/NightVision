@@ -11,7 +11,7 @@ public Plugin myinfo =
 	name = "NightVision",
 	author = "GAMMA CASE",
 	description = "Allows players to enable \"night vision\"",
-	version = "1.0.0",
+	version = "1.0.1",
 	url = "http://steamcommunity.com/id/_GAMMACASE_/"
 };
 
@@ -77,6 +77,8 @@ bool gEnabled[MAXPLAYERS];
 Settings gSettings[MAXPLAYERS];
 float gLastTimeOfUse[MAXPLAYERS];
 
+bool gLate;
+
 Cookie gSettingsCookie;
 ConVar gIntensityDelta,
 	gSpamDelta;
@@ -97,16 +99,37 @@ public void OnPluginStart()
 	
 	LoadTranslations("nightvision.phrases");
 	
-	ReadSettings();
+	ParseConfigFile();
+	
+	if(gLate)
+	{
+		for(int i = 1; i <= MaxClients; i++)
+		{
+			if(!IsClientInGame(i) || IsFakeClient(i) || !AreClientCookiesCached(i))
+				continue;
+			
+			OnClientCookiesCached(i);
+		}
+	}
+}
+
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
+{
+	gLate = late;
 }
 
 public void OnConfigsExecuted()
+{
+	ParseConfigFile();
+}
+
+void ParseConfigFile()
 {
 	char path[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, path, sizeof(path), CONFIG_FILE);
 	
 	if(!FileExists(path))
-		ThrowError(SNAME..."Can't find file \"%s\".", path);
+		SetFailState(SNAME..."Can't find file \"%s\".", path);
 	
 	KeyValues kv = new KeyValues("NightVision");
 	kv.ImportFromFile(path);
@@ -122,15 +145,24 @@ public void OnConfigsExecuted()
 		
 		tmpl.id = kv.GetNum("id", -1);
 		if(tmpl.id == -1)
-			ThrowError(SNAME..."Invalid or missing id for \"%s\" section in nightvision.cfg", buff);
+		{
+			LogMessage(SNAME..."Invalid or missing id for \"%s\" section in nightvision.cfg, skipping...", buff);
+			continue;
+		}
 		
 		kv.GetString("display_name", tmpl.displayName, sizeof(Template::displayName));
 		if(tmpl.displayName[0] == '\0')
-			ThrowError(SNAME..."Invalid or missing display_name for \"%s\" section in nightvision.cfg", buff);
+		{
+			LogMessage(SNAME..."Invalid or missing display_name for \"%s\" section in nightvision.cfg, skipping...", buff);
+			continue;
+		}
 		
 		kv.GetString("raw_file", tmpl.raw_file, sizeof(tmpl.raw_file));
 		if(tmpl.raw_file[0] == '\0' || !FileExists(tmpl.raw_file, true))
-			ThrowError(SNAME..."Invalid or missing raw_file for \"%s\" section in nightvision.cfg", buff);
+		{
+			LogMessage(SNAME..."Invalid or missing raw_file for \"%s\" section in nightvision.cfg, skipping...", buff);
+			continue;
+		}
 		
 		AddFileToDownloadsTable(tmpl.raw_file);
 		
@@ -139,9 +171,7 @@ public void OnConfigsExecuted()
 	} while(kv.GotoNextKey());
 	
 	if(gCCTemplates.Length == 0)
-		ThrowError(SNAME..."Invalid or empty nightvision.cfg found, please add some entries to it before you can use that plugin!");
-	
-	ReadSettings();
+		SetFailState(SNAME..."Invalid or empty \"%s\" found, please add some entries to it before you can use that plugin!", path);
 	
 	delete kv;
 }
@@ -428,17 +458,6 @@ void SaveSettings(int client)
 	char buff[32];
 	Format(buff, sizeof(buff), "%.2f;%i", gSettings[client].intensity, gSettings[client].ccid);
 	gSettingsCookie.Set(client, buff);
-}
-
-void ReadSettings()
-{
-	for(int i = 1; i <= MaxClients; i++)
-	{
-		if(!IsClientConnected(i) || !IsClientInGame(i) || !AreClientCookiesCached(i))
-			continue;
-		
-		OnClientCookiesCached(i);
-	}
 }
 
 void ReflectIntensityChange(int client)
